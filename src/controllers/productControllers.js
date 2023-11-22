@@ -73,8 +73,8 @@ class ProductController {
       thumbnails,
     } = req.body;
 
-    const owner = req.user._id; 
-    
+    const owner = req.user._id;
+
     if (!title) {
       res.status(400).send({
         status: "error",
@@ -150,6 +150,7 @@ class ProductController {
         res.send({
           status: "ok",
           message: "El Producto se agregó correctamente!",
+          productId: wasAdded._id,
         });
         socketServer.emit("product_created", {
           _id: wasAdded._id,
@@ -241,9 +242,8 @@ class ProductController {
 
       const product = await this.productService.getProductById(pid);
 
-      console.log("user",req.user)
+      console.log("user", req.user);
       console.log("product owner", product.owner);
-
 
       if (!product) {
         req.logger.error("Producto no encontrado");

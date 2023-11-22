@@ -12,7 +12,12 @@ class CartController {
   async createCart(req, res) {
     try {
       const newCart = await this.cartService.createCart();
-      res.send(newCart);
+      res.status(201).json({
+        status: "success",
+        message: "El Carrito se creó correctamente!",
+        cartId: newCart._id,
+        payload: newCart,
+      });
       req.logger.info("Cart created:", newCart);
     } catch (error) {
       res.status(500).send({
@@ -26,7 +31,10 @@ class CartController {
   async getCart(req, res) {
     try {
       const cart = await this.cartService.getCart(req.params.cid);
-      res.send({ products: cart.products });
+      res.json({
+        status: "success",
+        cart: cart,
+      });
       req.logger.info("Cart retrieved:", cart);
     } catch (error) {
       res.status(400).send({

@@ -19,13 +19,13 @@ class CartManager {
   async getCart(id) {
     if (this.validateId(id)) {
       const cart = await cartModel.findOne({ _id: id }).lean();
-      console.log('Retrieved cart:', cart);  
+      console.log("Retrieved cart:", cart);
       return cart || null;
     } else {
-      console.log('Not found!');
+      console.log("Not found!");
       return null;
     }
-}
+  }
 
   async getCarts() {
     return await cartModel.find().lean();
@@ -48,9 +48,9 @@ class CartManager {
           };
         }
 
-        if (product.stock < quantity) { 
+        if (product.stock < quantity) {
           return { status: "error", message: "Stock insuficiente!" };
-      }
+        }
 
         const updateResult = await cartModel.updateOne(
           { _id: cid, "products.product": pid },
