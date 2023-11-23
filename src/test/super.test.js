@@ -37,7 +37,6 @@ describe("Test de integracion de ecommerce", () => {
 
         expect(loginResponse.statusCode).to.equal(200);
         globalCookie = loginResponse.headers["set-cookie"][0].split(";")[0];
-        console.log("Cookie after login:", globalCookie);
       });
     });
   });
@@ -52,8 +51,6 @@ describe("Test de integracion de ecommerce", () => {
         expect(_body.payload).to.be.an("array");
       });
       it("Obtengo un producto (ejemplo) por su ID - GET /api/products/652b29ce8b1c2751a6e223bf", async function () {
-        console.log("Using cookie in request:", globalCookie);
-
         const productMock = generateMockProduct();
         const createProductResponse = await requester
           .post("/api/products")
@@ -69,22 +66,17 @@ describe("Test de integracion de ecommerce", () => {
 
         const productId = createProductResponse.body.productId;
 
-        console.log("Product ID:", productId);
-
         const getProductResponse = await requester
           .get(`/api/products/${productId}`)
           .set("Cookie", globalCookie);
 
         const { statusCode, ok, body } = getProductResponse;
-        console.log("Response body:", body);
         expect(body.data).to.be.an("object");
         expect(body.data).to.have.property("_id", productId);
       });
     });
     describe("El usuario esta loggeado y tiene un rol", () => {
       it("Deberia crear un producto si estas loggeado y tu rol lo permite - POST /api/products/", async function () {
-        console.log("Using cookie in request post product:", globalCookie);
-
         const productMock = generateMockProduct();
         const createProductResponse = await requester
           .post("/api/products")
